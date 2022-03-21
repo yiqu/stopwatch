@@ -1,0 +1,64 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/workspace
+    docker:
+      - image: cimg/node:14.19-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: workspace-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          key: workspace-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
+      - run: sudo npm install -g @angular/cli > /dev/null
+      - run: echo "Building for PROD"
+      - run: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            ng build --configuration=production --base-href=/stopwatch/
+          else
+            npm run build
+          fi
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - dist/*
+  deploy:
+    working_directory: ~/workspace
+    docker:
+      - image: node:8.10.0
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - '50:a8:b5:bb:c2:aa:7a:2f:c5:23:89:4a:f0:15:6d:58'
+      - checkout
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: Install gh-pages
+          command: |
+            npm install -g --silent gh-pages
+      - run:
+          name: Configure git
+          command: |
+            git config user.email "circleci@example.com"
+            git config user.name "CircleCi"
+      - run:
+          name: Deploy to gh-pages branch
+          command: gh-pages --message "[ci skip]" -d dist/stopwatch
+
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
