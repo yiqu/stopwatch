@@ -1,7 +1,7 @@
 <h1 align="center">Stopwatch</h1>
 
 <p align="center">
-  <a href="https://circleci.com/gh/angular/workflows/angular/tree/master">
+  <a href="https://app.circleci.com/pipelines/github/yiqu/stopwatch">
     <img src="https://img.shields.io/circleci/build/github/yiqu/stopwatch/master?label=circleci&style=for-the-badge" alt="CI status" />
   </a>&nbsp;
   <a href="">
