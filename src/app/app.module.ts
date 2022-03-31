@@ -13,6 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { ROUTER_STATE } from './store/router/router.state';
+import { SharedBudleModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ROUTER_STATE } from './store/router/router.state';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    SharedBudleModule,
     StoreModule.forRoot(appReducers, {
       metaReducers: metaReducers,
       runtimeChecks: {

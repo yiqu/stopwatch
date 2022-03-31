@@ -12,7 +12,7 @@ export function createFormControl2(value: any, disabled: boolean, validators: an
   let fc = new FormControl({
     value: value,
     disabled: disabled
-  }, validators, asyncValids);
+  }, { validators, asyncValidators: asyncValids, updateOn: 'change' });
   return fc;
 }
 

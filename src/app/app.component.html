@@ -1,1 +1,12 @@
 Hello
+
+<div>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Enter app version</mat-label>
+    <input matInput placeholder="App version" [formControl]="versionFc">
+    <mat-error *ngIf="!this.versionFc.pending && this.versionFc.hasError('appVersionExist')">
+      This version already exist!
+    </mat-error>
+  </mat-form-field>
+  <span *ngIf="this.versionFc.pending">checking...</span>
+</div>
